@@ -36,3 +36,17 @@
     transform: rotate(360deg);
   }
 }
+
+body{
+  background-color: #333;
+  color:#d023b9;
+  font-size: larger;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+th{
+  color:#e9b35b;
+
+}
+tr{
+  color:#7ade61;
+}

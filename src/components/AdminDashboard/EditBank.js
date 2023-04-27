@@ -1,9 +1,15 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const EditBank = () => {
-  const id = useParams().bankid;
+
+  const navigateObject = new useNavigate()
+  const user = {
+    id : useParams().id,
+    role : useParams().role,
+    bankid : useParams().bankid
+  }
 
   const [fullname, setFullname] = useState("Bank name")
   const [abbreviation, setAbbreviation] = useState("abbreviation")
@@ -11,7 +17,7 @@ const EditBank = () => {
 
 
   const handleEditForm = async (e) => {
-    const response = await axios.get(`http://localhost:8080/bank/${id}`).catch((err) => {
+    const response = await axios.get(`http://localhost:8080/bank/${user.bankid}`).catch((err) => {
       alert("error occured")
       return
     })
@@ -20,16 +26,17 @@ const EditBank = () => {
       alert("No data found")
       return
     }
-
+    console.log(response);
     setFullname(response.data.fullname)
     setAbbreviation(response.data.abbreviation)
-    console.log("fullname: " + fullname);
+    console.log("fullname: " + fullname + abbreviation);
   }
 
   const SubmitEditForm = async (e) => {
 
+    e.preventDefault()
     const response = await axios.put(`http://localhost:8080/bank`, {
-      "bankid": `${id}`,
+      "bankid": user.bankid,
       "fullname": fullname,
       "abbreviation": abbreviation
 
@@ -38,7 +45,8 @@ const EditBank = () => {
       return
     })
 
-
+    navigateObject(`/admindashboard/${user.role}/${user.id}/bank`)
+    console.log("reached");
   }
 
   useEffect(() => {
@@ -47,16 +55,16 @@ const EditBank = () => {
   },[])
 
   return (
-    <div className="modal-dialog modal-dialog-centered">
+    <div className="container">
 
       <form>
         <div className="mb-3">
           <label className="form-label">Bank ID</label>
-          {/* <input type="text" className="form-control" value={id} /> */}
+          <input type="text" className="form-control" value={user.bankid} />
         </div>
         <div className="mb-3">
           <label className="form-label">Fullname</label>
-          <input type="text" className="form-control" placeholder={fullname}
+          <input type="text" className="form-control" value={fullname}
             onChange={
               (e) =>  setFullname(e.target.value) 
             } />
@@ -64,12 +72,12 @@ const EditBank = () => {
         </div>
         <div className="mb-3">
           <label className="form-label">Abbreviation</label>
-          <input type="text" className="form-control" placeholder={abbreviation}
+          <input type="text" className="form-control" value={abbreviation}
             onChange={
               (e) => setAbbreviation(e.target.value)
             } />
         </div>
-        <button className="btn btn-primary" onClick={SubmitEditForm}>Submit</button>
+        <button className="btn btn-primary" onClick={(e) =>SubmitEditForm(e)}>Submit</button>
       </form>
 
     </div>

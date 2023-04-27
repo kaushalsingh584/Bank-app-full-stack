@@ -18,13 +18,11 @@ const AddBank = () => {
       
         "fullname": fullnameRef.current.value,
         "abbreviation": abbreviationRef.current.value,
-        // "accounts" : [
-        //     {
+        "accounts" : [
+            {
 
-        //     },{
-
-        //     }
-        // ]
+            }
+        ]
    
 
     }).catch((err) =>{
